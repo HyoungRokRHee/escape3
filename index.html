@@ -64,7 +64,7 @@
     <button id="passwordButton" onclick="checkPassword()">확인</button>
 
     <div id="puzzleSection">
-        <p>힌트:title</p>
+        <p>힌트:List, First, Title</p>
         <input type="text" id="answerInput">
         <button onclick="checkAnswer()">확인</button>
     </div>
@@ -89,7 +89,7 @@
 
    function checkAnswer() {
     const answer = document.getElementById("answerInput").value;
-    if (answer === "I am 복이에요") {
+    if (answer === "하나님의 부르심") {
         document.body.innerHTML = `
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; background-image: url('https://github.com/HyoungRokRHee/escape1/raw/main/whole.png?raw=true'); background-size: cover; margin-top: 30px;">
                 <h1 style="color: red; font-size: 2em; margin-top: 50px;">소망관 1층<br>주차장으로 가세요.</h1>
