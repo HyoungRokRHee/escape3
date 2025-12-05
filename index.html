@@ -1,107 +1,170 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로기네 탈출 3번</title>
-    <style>
-        /* 독도체 폰트 불러오기 */
-        @font-face {
-            font-family: 'Dokdo';
-            src: url('./fonts/Dokdo-Regular.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
+    <title>Escape Game</title>
 
-        /* 전체 배경 이미지 설정 */
+    <style>
         body {
-            background-image: url('https://github.com/HyoungRokRHee/escape1/raw/main/whole.png?raw=true');
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+        }
+
+        #uiBox {
+            position: absolute;
+            bottom: 50px;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            color: white;
-            text-align: center;
-            font-family: 'Dokdo', sans-serif;
-            font-size: 1.2em;
         }
-        #puzzleSection, #resultSection {
-            display: none;
-            margin-top: 30px; /* 전체 섹션을 아래로 이동 */
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-        }
+
         input, button {
-            padding: 10px;
-            font-size: 1em;
-            margin: 10px 0;
+            padding: 12px;
+            font-size: 1.1em;
+            margin: 8px 0;
+            border-radius: 10px;
+            border: none;
         }
-        h2 {
-            margin-top: 50px;
-        }
-        #passwordMessage {
-            font-size: 0.6em; /* 글자 크기 절반으로 줄이기 */
-            margin-top: 20px; /* 아래로 내리기 */
-            line-height: 1.5em; /* 줄 간격 조절 */
-        }
-        #result.success {
-            color: red;
+
+        button {
+            background-color: rgba(255, 255, 255, 0.85);
             font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <h2 id="passwordMessage">비밀번호를 입력하세요</h2>
-    <input type="text" id="passwordInput" placeholder="비밀번호 입력">
-    <button id="passwordButton" onclick="checkPassword()">확인</button>
+    <div id="uiBox">
 
-    <div id="puzzleSection">
-        <p>힌트:List, First, Title</p>
-        <input type="text" id="answerInput">
-        <button onclick="checkAnswer()">확인</button>
+        <!-- STEP 1 : first.png (비밀번호 2290) -->
+        <div id="step1">
+            <input type="text" id="pw1" placeholder="비밀번호 입력">
+            <button onclick="checkPw1()">확인</button>
+        </div>
+
+        <!-- STEP 2 : escape44-1.png 다음 버튼 -->
+        <div id="step2" style="display:none;">
+            <button onclick="nextToStep3()">다음</button>
+        </div>
+
+        <!-- STEP 3 : 004.png 정답 입력(민병관) -->
+        <div id="step3" style="display:none;">
+            <input type="text" id="answer3" placeholder="정답 입력">
+            <button onclick="checkAnswer3()">확인</button>
+        </div>
+
+        <!-- STEP 4 : 005.png 정답 입력(민서까지?) -->
+        <div id="step4" style="display:none;">
+            <input type="text" id="answer4" placeholder="정답 입력">
+            <button onclick="checkAnswer4()">확인</button>
+        </div>
+
+        <!-- STEP 5 : 006.png 정답 입력(아름다운 메리메리) -->
+        <div id="step5" style="display:none;">
+            <input type="text" id="answer5" placeholder="정답 입력">
+            <button onclick="checkAnswer5()">확인</button>
+        </div>
+
+        <!-- STEP 6 : 007.png 정답 입력(yes i can) -->
+        <div id="step6" style="display:none;">
+            <input type="text" id="answer6" placeholder="정답 입력">
+            <button onclick="checkAnswer6()">확인</button>
+        </div>
+
     </div>
 
-    <p id="result"></p>
-
     <script>
-        function checkPassword() {
-    const password = document.getElementById("passwordInput").value;
-    if (password === "2290") {
-        document.getElementById("puzzleSection").style.display = "block";
-        document.getElementById("passwordInput").style.display = "none";
-        document.getElementById("passwordButton").style.display = "none"; // ID로 버튼 숨기기
-        const passwordMessage = document.getElementById("passwordMessage");
-        passwordMessage.innerHTML = "내 가장 마지막 기억이 언제인지 찾아냈다...<br>내 마지막 기억은 2024년 3월 17일이다.<br>그때 무슨일이 있었는지 생생하게 기억이 난다.<br>내가 보고 듣고 느꼈던 그 모든 것이...";
-        passwordMessage.style.marginTop = "20px"; // 아래로 내리기
-      
-    } else {
-        alert("비밀번호가 틀렸습니다. 다시 시도하세요.");
-    }
-}
+        // 초기 화면(first.png)
+        document.body.style.backgroundImage =
+            "url('https://github.com/HyoungRokRHee/escape1/raw/main/first.png?raw=true')";
 
-   function checkAnswer() {
-    const answer = document.getElementById("answerInput").value;
-    if (answer === "하나님의 부르심") {
-        document.body.innerHTML = `
-            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; text-align: center; background-image: url('https://github.com/HyoungRokRHee/escape1/raw/main/whole.png?raw=true'); background-size: cover; margin-top: 30px;">
-                <h1 style="color: red; font-size: 2em; margin-top: 50px;">소망관 1층<br>주차장으로 가세요.</h1>
-                <h2 style="color: red; font-size: 1.5em; margin-top: 20px;">비밀번호: 2076</h2>
-            </div>
-        `;
-    } else {
-        const result = document.getElementById("result");
-        result.textContent = "틀렸습니다. 다시 시도하세요.";
-        result.className = "";
-    }
-}
+        /* STEP 1 – 비밀번호 2290 */
+        function checkPw1() {
+            const pw = document.getElementById("pw1").value;
+
+            if (pw === "2290") {
+                document.body.style.backgroundImage =
+                    "url('https://github.com/HyoungRokRHee/escape1/raw/main/escape44-1.png?raw=true')";
+                document.getElementById("step1").style.display = "none";
+                document.getElementById("step2").style.display = "flex";
+            } else {
+                alert("비밀번호가 틀렸습니다.");
+            }
+        }
+
+        /* STEP 2 → STEP 3 */
+        function nextToStep3() {
+            document.body.style.backgroundImage =
+                "url('https://github.com/HyoungRokRHee/escape1/raw/main/004.png?raw=true')";
+            document.getElementById("step2").style.display = "none";
+            document.getElementById("step3").style.display = "flex";
+        }
+
+        /* STEP 3 – 정답 민병관 */
+        function checkAnswer3() {
+            const ans = document.getElementById("answer3").value.trim();
+
+            if (ans === "민병관") {
+                document.body.style.backgroundImage =
+                    "url('https://github.com/HyoungRokRHee/escape1/raw/main/005.png?raw=true')";
+                document.getElementById("step3").style.display = "none";
+                document.getElementById("step4").style.display = "flex";
+            } else {
+                alert("정답이 아닙니다.");
+            }
+        }
+
+        /* STEP 4 – 정답 민서까지? */
+        function checkAnswer4() {
+            const ans = document.getElementById("answer4").value.trim();
+
+            if (ans === "민서까지?") {
+                document.body.style.backgroundImage =
+                    "url('https://github.com/HyoungRokRHee/escape1/raw/main/006.png?raw=true')";
+                document.getElementById("step4").style.display = "none";
+                document.getElementById("step5").style.display = "flex";
+            } else {
+                alert("정답이 아닙니다.");
+            }
+        }
+
+        /* STEP 5 – 정답 아름다운 메리메리 */
+        function checkAnswer5() {
+            const ans = document.getElementById("answer5").value.trim();
+
+            if (ans === "아름다운 메리메리") {
+                document.body.style.backgroundImage =
+                    "url('https://github.com/HyoungRokRHee/escape1/raw/main/007.png?raw=true')";
+                document.getElementById("step5").style.display = "none";
+                document.getElementById("step6").style.display = "flex";
+            } else {
+                alert("정답이 아닙니다.");
+            }
+        }
+
+        /* STEP 6 – 정답 yes i can */
+        function checkAnswer6() {
+            const ans = document.getElementById("answer6").value.trim().toLowerCase();
+
+            if (ans === "yes i can") {
+                document.body.style.backgroundImage =
+                    "url('https://github.com/HyoungRokRHee/escape1/raw/main/escape44-3.png?raw=true')";
+
+                document.getElementById("step6").style.display = "none";
+            } else {
+                alert("정답이 아닙니다.");
+            }
+        }
     </script>
 
 </body>
