@@ -1,171 +1,174 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escape Game</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escape44</title>
 
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
+    }
 
-        #uiBox {
-            position: absolute;
-            bottom: 50px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    /* 화면 전체 이미지 */
+    #screen {
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        display: block;
+    }
 
-        input, button {
-            padding: 12px;
-            font-size: 1.1em;
-            margin: 8px 0;
-            border-radius: 10px;
-            border: none;
-        }
+    /* 입력 영역 */
+    #input-area {
+        position: fixed;
+        bottom: 40px;
+        width: 100%;
+        text-align: center;
+    }
 
-        button {
-            background-color: rgba(255, 255, 255, 0.85);
-            font-weight: bold;
-        }
-    </style>
+    input {
+        padding: 12px;
+        font-size: 1.2em;
+        width: 70%;
+        max-width: 250px;
+        border-radius: 8px;
+        border: none;
+    }
+
+    button {
+        margin-top: 10px;
+        padding: 12px 20px;
+        font-size: 1.2em;
+        border: none;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.8);
+    }
+</style>
 </head>
+
 <body>
 
-    <div id="uiBox">
+    <!-- 메인 이미지 -->
+    <img id="screen" src="first.png">
 
-        <!-- STEP 1 : first.png (비밀번호 2290) -->
-        <div id="step1">
-            <input type="text" id="pw1" placeholder="비밀번호 입력">
-            <button onclick="checkPw1()">확인</button>
-        </div>
+    <!-- 입력/버튼 구역 -->
+    <div id="input-area"></div>
 
-        <!-- STEP 2 : escape44-1.png 다음 버튼 -->
-        <div id="step2" style="display:none;">
-            <button onclick="nextToStep3()">다음</button>
-        </div>
+<script>
+    const screen = document.getElementById("screen");
+    const inputArea = document.getElementById("input-area");
 
-        <!-- STEP 3 : 004.png 정답 입력(민병관) -->
-        <div id="step3" style="display:none;">
-            <input type="text" id="answer3" placeholder="정답 입력">
-            <button onclick="checkAnswer3()">확인</button>
-        </div>
+    // -------------------------
+    // 1단계: 첫 화면 (비밀번호: 2290)
+    // -------------------------
+    function step1() {
+        inputArea.innerHTML = `
+            <input id="pw1" placeholder="비밀번호 입력">
+            <br>
+            <button onclick="checkStep1()">확인</button>
+        `;
+    }
 
-        <!-- STEP 4 : 005.png 정답 입력(민서까지?) -->
-        <div id="step4" style="display:none;">
-            <input type="text" id="answer4" placeholder="정답 입력">
-            <button onclick="checkAnswer4()">확인</button>
-        </div>
-
-        <!-- STEP 5 : 006.png 정답 입력(아름다운 메리메리) -->
-        <div id="step5" style="display:none;">
-            <input type="text" id="answer5" placeholder="정답 입력">
-            <button onclick="checkAnswer5()">확인</button>
-        </div>
-
-        <!-- STEP 6 : 007.png 정답 입력(yes i can) -->
-        <div id="step6" style="display:none;">
-            <input type="text" id="answer6" placeholder="정답 입력">
-            <button onclick="checkAnswer6()">확인</button>
-        </div>
-
-    </div>
-
-    <script>
-        // 초기 화면(first.png)
-        document.body.style.backgroundImage =
-            "url('https://github.com/HyoungRokRHee/escape1/raw/main/first.png?raw=true')";
-
-        /* STEP 1 – 비밀번호 2290 */
-        function checkPw1() {
-            const pw = document.getElementById("pw1").value;
-
-            if (pw === "2290") {
-                document.body.style.backgroundImage =
-                    "url('https://github.com/HyoungRokRHee/escape1/raw/main/escape44-1.png?raw=true')";
-                document.getElementById("step1").style.display = "none";
-                document.getElementById("step2").style.display = "flex";
-            } else {
-                alert("비밀번호가 틀렸습니다.");
-            }
+    function checkStep1() {
+        if (document.getElementById("pw1").value === "2290") {
+            step2();
+        } else {
+            alert("비밀번호가 틀렸습니다.");
         }
+    }
 
-        /* STEP 2 → STEP 3 */
-        function nextToStep3() {
-            document.body.style.backgroundImage =
-                "url('https://github.com/HyoungRokRHee/escape1/raw/main/004.png?raw=true')";
-            document.getElementById("step2").style.display = "none";
-            document.getElementById("step3").style.display = "flex";
-        }
+    // -------------------------
+    // 2단계: escape44-1 + 다음 버튼
+    // -------------------------
+    function step2() {
+        screen.src = "escape44-1.png";
+        inputArea.innerHTML = `
+            <button onclick="step3()">다음</button>
+        `;
+    }
 
-        /* STEP 3 – 정답 민병관 */
-        function checkAnswer3() {
-            const ans = document.getElementById("answer3").value.trim();
+    // -------------------------
+    // 3단계: 004.png + 정답 민병관
+    // -------------------------
+    function step3() {
+        screen.src = "004.png";
+        inputArea.innerHTML = `
+            <input id="ans1" placeholder="정답 입력">
+            <br><button onclick="checkStep3()">확인</button>
+        `;
+    }
 
-            if (ans === "민병관") {
-                document.body.style.backgroundImage =
-                    "url('https://github.com/HyoungRokRHee/escape1/raw/main/005.png?raw=true')";
-                document.getElementById("step3").style.display = "none";
-                document.getElementById("step4").style.display = "flex";
-            } else {
-                alert("정답이 아닙니다.");
-            }
-        }
+    function checkStep3() {
+        if (document.getElementById("ans1").value.trim() === "민병관") {
+            step4();
+        } else alert("틀렸습니다.");
+    }
 
-        /* STEP 4 – 정답 민서까지? */
-        function checkAnswer4() {
-            const ans = document.getElementById("answer4").value.trim();
+    // -------------------------
+    // 4단계: 005.png + 정답 민서까지?
+    // -------------------------
+    function step4() {
+        screen.src = "005.png";
+        inputArea.innerHTML = `
+            <input id="ans2" placeholder="정답 입력">
+            <br><button onclick="checkStep4()">확인</button>
+        `;
+    }
 
-            if (ans === "민서까지?") {
-                document.body.style.backgroundImage =
-                    "url('https://github.com/HyoungRokRHee/escape1/raw/main/006.png?raw=true')";
-                document.getElementById("step4").style.display = "none";
-                document.getElementById("step5").style.display = "flex";
-            } else {
-                alert("정답이 아닙니다.");
-            }
-        }
+    function checkStep4() {
+        if (document.getElementById("ans2").value.trim() === "민서까지?") {
+            step5();
+        } else alert("틀렸습니다.");
+    }
 
-        /* STEP 5 – 정답 아름다운 메리메리 */
-        function checkAnswer5() {
-            const ans = document.getElementById("answer5").value.trim();
+    // -------------------------
+    // 5단계: 006.png + 정답 아름다운 메리메리
+    // -------------------------
+    function step5() {
+        screen.src = "006.png";
+        inputArea.innerHTML = `
+            <input id="ans3" placeholder="정답 입력">
+            <br><button onclick="checkStep5()">확인</button>
+        `;
+    }
 
-            if (ans === "아름다운 메리메리") {
-                document.body.style.backgroundImage =
-                    "url('https://github.com/HyoungRokRHee/escape1/raw/main/007.png?raw=true')";
-                document.getElementById("step5").style.display = "none";
-                document.getElementById("step6").style.display = "flex";
-            } else {
-                alert("정답이 아닙니다.");
-            }
-        }
+    function checkStep5() {
+        if (document.getElementById("ans3").value.trim() === "아름다운 메리메리") {
+            step6();
+        } else alert("틀렸습니다.");
+    }
 
-        /* STEP 6 – 정답 yes i can */
-        function checkAnswer6() {
-            const ans = document.getElementById("answer6").value.trim().toLowerCase();
+    // -------------------------
+    // 6단계: 007.png + 정답 yes i can
+    // -------------------------
+    function step6() {
+        screen.src = "007.png";
+        inputArea.innerHTML = `
+            <input id="ans4" placeholder="정답 입력">
+            <br><button onclick="checkStep6()">확인</button>
+        `;
+    }
 
-            if (ans === "yes i can") {
-                document.body.style.backgroundImage =
-                    "url('https://github.com/HyoungRokRHee/escape1/raw/main/escape44-3.png?raw=true')";
+    function checkStep6() {
+        if (document.getElementById("ans4").value.trim().toLowerCase() === "yes i can") {
+            finalStep();
+        } else alert("틀렸습니다.");
+    }
 
-                document.getElementById("step6").style.display = "none";
-            } else {
-                alert("정답이 아닙니다.");
-            }
-        }
-    </script>
+    // -------------------------
+    // 마지막: escape44-3
+    // -------------------------
+    function finalStep() {
+        screen.src = "escape44-3.png";
+        inputArea.innerHTML = "";  // 입력칸 제거
+    }
+
+    // 시작
+    step1();
+</script>
 
 </body>
 </html>
